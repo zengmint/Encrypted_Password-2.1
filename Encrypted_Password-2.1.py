@@ -143,7 +143,7 @@ def main_menu():
     add_icon = ImageTk.PhotoImage(Image.open("add_icon.png").resize((50, 50)))
     consult_icon = ImageTk.PhotoImage(Image.open("consult_icon.png").resize((50, 50)))
     modify_icon = ImageTk.PhotoImage(Image.open("modify_icon.png").resize((50, 50)))
-    import_icon = ImageTk.PhotoImage(Image.open("import_icon.png").resize((50, 50)))
+    #import_icon = ImageTk.PhotoImage(Image.open("import_icon.png").resize((50, 50)))
 
     button_width = 80  # Ancho estándar para los botones
     button_height = 60  # Alto estándar para los botones
@@ -151,7 +151,7 @@ def main_menu():
     tk.Button(root, text="Add Data", image=add_icon, compound="top", command=lambda: [root.destroy(), add_data_form()], width=button_width, height=button_height).pack(pady=10)
     tk.Button(root, text="Consult Data", image=consult_icon, compound="top", command=lambda: [root.destroy(), consult_data_form()], width=button_width, height=button_height).pack(pady=10)
     tk.Button(root, text="Modify Data", image=modify_icon, compound="top", command=lambda: [root.destroy(), modify_data_form()], width=button_width, height=button_height).pack(pady=10)
-    tk.Button(root, text="Import CSV", image=import_icon, compound="top", command=import_csv, width=button_width, height=button_height).pack(pady=10)
+    #tk.Button(root, text="Import CSV", image=import_icon, compound="top", command=import_csv, width=button_width, height=button_height).pack(pady=10)
 
     tk.Button(root, text="Exit", command=root.destroy).pack(pady=10)
 
@@ -367,7 +367,7 @@ def consult_data_form():
     form.mainloop()
 
 # Import data from CSV
-def import_csv():
+"""def import_csv():
     file_path = filedialog.askopenfilename(
         title="Select CSV File",
         filetypes=[("CSV Files", "*.csv")]
@@ -391,6 +391,7 @@ def import_csv():
         messagebox.showinfo("Import Successful", "Data imported successfully!")
     except Exception as e:
         messagebox.showerror("Error", f"An error occurred: {e}")
+"""
 
 
 if __name__ == "__main__":
