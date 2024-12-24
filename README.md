@@ -49,7 +49,7 @@ Antes de comenzar, asegúrate de que tienes los siguientes elementos instalados 
 ## Estructura del Proyecto
 ```
 Encrypted_Password-2.1/
-├── main.py              # Archivo principal del programa
+├── Encrypted_Password-2.1.py              # Archivo principal del programa
 ├── utils.py             # Funciones auxiliares para cifrado y descifrado
 ├── database/            # Base de datos para almacenar las contraseñas cifradas
 ├── requirements.txt     # Dependencias del proyecto
