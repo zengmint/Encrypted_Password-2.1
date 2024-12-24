@@ -28,7 +28,7 @@ Antes de comenzar, asegúrate de que tienes los siguientes elementos instalados 
 
 3. Ejecuta el programa:
    ```bash
-   python main.py
+   python Encrypted_Password-2.1.py
    ```
 
 ## Uso
