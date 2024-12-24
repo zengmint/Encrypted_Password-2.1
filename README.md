@@ -33,7 +33,10 @@ Antes de comenzar, asegúrate de que tienes los siguientes elementos instalados 
 
 ## Uso
 1. **Configura tu Contraseña Maestra:**
-   - La primera vez que ejecutes el programa, se te pedirá que configures una contraseña maestra. Esta contraseña será necesaria para acceder al gestor.
+   - Cada vez que ejecutes el programa, se te pedirá introducir una contraseña maestra. Esta contraseña será necesaria para acceder al gestor.
+      (Elige una contraseña maestra segura y colocala cada vez que ingreses al programa,
+        ya que las cuentas que crees deberan ser consultadas con dicha contraseña maestra indicada al inicio del programa
+        ¡No la olvides o perderas la informacion que ingreses!)
 
 2. **Gestión de Contraseñas:**
    - Agrega una nueva contraseña proporcionando un nombre de servicio, usuario y contraseña.
@@ -41,7 +44,7 @@ Antes de comenzar, asegúrate de que tienes los siguientes elementos instalados 
    - Elimina entradas cuando ya no las necesites.
 
 3. **Seguridad de los Datos:**
-   - Los datos están cifrados y almacenados localmente. Solo se descifran temporalmente cuando se introducen correctamente la contraseña maestra.
+   - Los datos están cifrados y almacenados localmente. Solo se descifran temporalmente cuando se introducen correctamente la contraseña maestra al iniciar el programa.
 
 ## Estructura del Proyecto
 ```
