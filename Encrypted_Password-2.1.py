@@ -1,7 +1,7 @@
 import os
 import base64
 import sqlite3
-from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives import hashes, padding
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
@@ -12,7 +12,7 @@ from tkinter import ttk, filedialog, messagebox
 from PIL import Image, ImageTk
 
 # Database connection
-DATABASE_URL = "sqlite:///passwords.db"
+DATABASE_URL = "sqlite:///cifred-p.db"
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False}, execution_options={"future_result": True})
 Session = sessionmaker(bind=engine)
 
@@ -93,13 +93,17 @@ def encrypt_password(password: str, encryption_key: bytes) -> dict:
     iv = os.urandom(16)
     cipher = Cipher(algorithms.AES(encryption_key), modes.CBC(iv), backend=default_backend())
     encryptor = cipher.encryptor()
-    pad_length = 16 - len(password) % 16
-    padded_password = password + chr(pad_length) * pad_length
-    encrypted_password = encryptor.update(padded_password.encode()) + encryptor.finalize()
+    
+    # Use PKCS7 padding
+    padder = padding.PKCS7(128).padder()
+    padded_password = padder.update(password.encode()) + padder.finalize()
+    
+    encrypted_password = encryptor.update(padded_password) + encryptor.finalize()
     return {
         'ciphertext': base64.b64encode(encrypted_password).decode(),
         'iv': base64.b64encode(iv).decode()
     }
+
 
 def decrypt_password(encrypted_data: dict, encryption_key: bytes) -> str:
     encrypted_password = base64.b64decode(encrypted_data['ciphertext'])
