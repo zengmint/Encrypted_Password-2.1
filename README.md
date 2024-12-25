@@ -1,5 +1,6 @@
 # Encrypted Password Manager 2.1
-![Password-Manager 2 1](https://github.com/user-attachments/assets/ed44ecd1-eb48-4965-8bc2-a4c363f114d4)
+![Password-Manager 2 1](https://github.com/user-attachments/assets/3252f658-1a8c-4f74-bf09-9c0d81c06a63)
+
 
 ## Descripción del Proyecto
 Este gestor de contraseñas ofrece una solución segura para almacenar y gestionar credenciales. Utiliza el algoritmo de cifrado AES (Advanced Encryption Standard) para proteger los datos y asegura que las contraseñas almacenadas nunca sean visibles en texto plano. Una contraseña maestra controla el acceso a las contraseñas almacenadas.
