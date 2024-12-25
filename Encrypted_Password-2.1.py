@@ -143,7 +143,7 @@ def main_menu():
     add_icon = ImageTk.PhotoImage(Image.open("add_icon.png").resize((50, 50)))
     consult_icon = ImageTk.PhotoImage(Image.open("consult_icon.png").resize((50, 50)))
     modify_icon = ImageTk.PhotoImage(Image.open("modify_icon.png").resize((50, 50)))
-    #import_icon = ImageTk.PhotoImage(Image.open("import_icon.png").resize((50, 50)))
+    import_icon = ImageTk.PhotoImage(Image.open("import_icon.png").resize((50, 50)))
 
     button_width = 80  # Ancho estándar para los botones
     button_height = 60  # Alto estándar para los botones
@@ -151,7 +151,7 @@ def main_menu():
     tk.Button(root, text="Add Data", image=add_icon, compound="top", command=lambda: [root.destroy(), add_data_form()], width=button_width, height=button_height).pack(pady=10)
     tk.Button(root, text="Consult Data", image=consult_icon, compound="top", command=lambda: [root.destroy(), consult_data_form()], width=button_width, height=button_height).pack(pady=10)
     tk.Button(root, text="Modify Data", image=modify_icon, compound="top", command=lambda: [root.destroy(), modify_data_form()], width=button_width, height=button_height).pack(pady=10)
-    #tk.Button(root, text="Import CSV", image=import_icon, compound="top", command=import_csv, width=button_width, height=button_height).pack(pady=10)
+    tk.Button(root, text="Import CSV", image=import_icon, compound="top", command=import_csv, width=button_width, height=button_height).pack(pady=10)
 
     tk.Button(root, text="Exit", command=root.destroy).pack(pady=10)
 
@@ -207,6 +207,78 @@ def add_data_form():
 
     tk.Button(form, text="Add", command=add_account).pack(pady=10)
     tk.Button(form, text="Back", command=lambda: [form.destroy(), main_menu()]).pack(pady=10)
+
+    form.mainloop()
+
+# Consult Data Form
+def consult_data_form():
+    form = tk.Tk()
+    form.title("Consult Data")
+    form.geometry("350x500+500+200")
+
+    tk.Label(form, text="Consult Account Data", font=("Arial", 14)).pack(pady=10)
+
+    accounts = get_all_accounts()
+
+    tk.Label(form, text="Select Account").pack()
+    account_combo = ttk.Combobox(form, values=accounts, state="readonly")
+    account_combo.pack(pady=5)
+
+    username_var = tk.StringVar()
+    password_var = tk.StringVar()
+
+    tk.Label(form, text="Username").pack()
+    username_entry = tk.Entry(form, textvariable=username_var, state="disabled")
+    username_entry.pack(pady=5)
+
+    tk.Label(form, text="Password").pack()
+    password_entry = tk.Entry(form, textvariable=password_var, state="disabled", show="*")
+    password_entry.pack(pady=5)
+
+        # Variable to track the visibility of the password
+    password_visible = False
+
+    def toggle_password_visibility():
+        nonlocal password_visible
+        if password_visible:
+            password_entry.config(show="*")
+            password_visible = False
+        else:
+            password_entry.config(show="")
+            password_visible = True
+
+
+    def consult_account():
+        selected_account = account_combo.get()
+        if not selected_account:
+            messagebox.showwarning("Warning", "Please select an account!")
+            return
+
+        details = get_account_details(selected_account)
+        if details[0] is None:  # Verifica si los datos están completos
+            messagebox.showerror("Error", "Incomplete or missing account data!")
+            return
+
+        username, contrasena_cifrada, iv, salt = details
+        salt = base64.b64decode(salt)
+        key = generate_key(MASTER_PASSWORD, salt)
+        encrypted_data = {
+            'ciphertext': contrasena_cifrada,
+            'iv': iv
+        }
+        try:
+            decrypted_password = decrypt_password(encrypted_data, key)
+            username_var.set(username)
+            password_var.set(decrypted_password)
+            messagebox.showinfo("Success", f"Account '{selected_account}' loaded successfully!")
+        except Exception as e:
+            messagebox.showerror("Error", f"Decryption failed: {e}")
+
+    tk.Button(form, text="Consult", command=consult_account).pack(pady=10)
+    tk.Button(form, text="Back", command=lambda: [form.destroy(), main_menu()]).pack(pady=10)
+
+    # Button to toggle password visibility
+    tk.Button(form, text="Show/Hide Password", command=toggle_password_visibility).pack(pady=10)
 
     form.mainloop()
 
@@ -293,81 +365,8 @@ def modify_data_form():
 
     form.mainloop()
 
-
-# Consult Data Form
-def consult_data_form():
-    form = tk.Tk()
-    form.title("Consult Data")
-    form.geometry("350x500+500+200")
-
-    tk.Label(form, text="Consult Account Data", font=("Arial", 14)).pack(pady=10)
-
-    accounts = get_all_accounts()
-
-    tk.Label(form, text="Select Account").pack()
-    account_combo = ttk.Combobox(form, values=accounts, state="readonly")
-    account_combo.pack(pady=5)
-
-    username_var = tk.StringVar()
-    password_var = tk.StringVar()
-
-    tk.Label(form, text="Username").pack()
-    username_entry = tk.Entry(form, textvariable=username_var, state="disabled")
-    username_entry.pack(pady=5)
-
-    tk.Label(form, text="Password").pack()
-    password_entry = tk.Entry(form, textvariable=password_var, state="disabled", show="*")
-    password_entry.pack(pady=5)
-
-        # Variable to track the visibility of the password
-    password_visible = False
-
-    def toggle_password_visibility():
-        nonlocal password_visible
-        if password_visible:
-            password_entry.config(show="*")
-            password_visible = False
-        else:
-            password_entry.config(show="")
-            password_visible = True
-
-
-    def consult_account():
-        selected_account = account_combo.get()
-        if not selected_account:
-            messagebox.showwarning("Warning", "Please select an account!")
-            return
-
-        details = get_account_details(selected_account)
-        if details[0] is None:  # Verifica si los datos están completos
-            messagebox.showerror("Error", "Incomplete or missing account data!")
-            return
-
-        username, contrasena_cifrada, iv, salt = details
-        salt = base64.b64decode(salt)
-        key = generate_key(MASTER_PASSWORD, salt)
-        encrypted_data = {
-            'ciphertext': contrasena_cifrada,
-            'iv': iv
-        }
-        try:
-            decrypted_password = decrypt_password(encrypted_data, key)
-            username_var.set(username)
-            password_var.set(decrypted_password)
-            messagebox.showinfo("Success", f"Account '{selected_account}' loaded successfully!")
-        except Exception as e:
-            messagebox.showerror("Error", f"Decryption failed: {e}")
-
-    tk.Button(form, text="Consult", command=consult_account).pack(pady=10)
-    tk.Button(form, text="Back", command=lambda: [form.destroy(), main_menu()]).pack(pady=10)
-
-    # Button to toggle password visibility
-    tk.Button(form, text="Show/Hide Password", command=toggle_password_visibility).pack(pady=10)
-
-    form.mainloop()
-
 # Import data from CSV
-"""def import_csv():
+def import_csv():
     file_path = filedialog.askopenfilename(
         title="Select CSV File",
         filetypes=[("CSV Files", "*.csv")]
@@ -376,23 +375,36 @@ def consult_data_form():
         return
 
     try:
-        with engine.connect() as connection:
-            with open(file_path, "r") as file:
-                for line in file:
-                    cuenta, usuario, contrasena = line.strip().split(",")
-                    try:
+        with open(file_path, "r") as file:
+            for line in file:
+                # Split line into account, username, and password
+                cuenta, usuario, contrasena = line.strip().split(",")
+
+                if not cuenta or not usuario or not contrasena:
+                    continue  # Skip incomplete lines
+
+                # Generate salt and encrypt the password
+                salt = os.urandom(16)
+                key = generate_key(MASTER_PASSWORD, salt)
+                encrypted_data = encrypt_password(contrasena, key)
+
+                try:
+                    # Insert encrypted data into the database
+                    with engine.begin() as connection:  # Ensure transactions
                         connection.execute(text(INSERT_ACCOUNT), {
                             "cuenta": cuenta,
                             "usuario": usuario,
-                            "contrasena": contrasena
+                            "contrasena_cifrada": encrypted_data['ciphertext'],
+                            "iv": encrypted_data['iv'],
+                            "salt": base64.b64encode(salt).decode()
                         })
-                    except Exception:
-                        pass  # Skip duplicate entries
+                except Exception:
+                    pass  # Skip duplicate or invalid entries
+
         messagebox.showinfo("Import Successful", "Data imported successfully!")
+
     except Exception as e:
         messagebox.showerror("Error", f"An error occurred: {e}")
-"""
-
 
 if __name__ == "__main__":
     initialize_database()
