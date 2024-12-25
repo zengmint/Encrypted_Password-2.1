@@ -1,4 +1,5 @@
 # Encrypted Password Manager 2.1
+![Password-Manager 2 1](https://github.com/user-attachments/assets/ed44ecd1-eb48-4965-8bc2-a4c363f114d4)
 
 ## Descripción del Proyecto
 Este gestor de contraseñas ofrece una solución segura para almacenar y gestionar credenciales. Utiliza el algoritmo de cifrado AES (Advanced Encryption Standard) para proteger los datos y asegura que las contraseñas almacenadas nunca sean visibles en texto plano. Una contraseña maestra controla el acceso a las contraseñas almacenadas.
@@ -33,7 +34,10 @@ Antes de comenzar, asegúrate de que tienes los siguientes elementos instalados 
 
 ## Uso
 1. **Configura tu Contraseña Maestra:**
-   - La primera vez que ejecutes el programa, se te pedirá que configures una contraseña maestra. Esta contraseña será necesaria para acceder al gestor.
+   - Cada vez que ejecutes el programa, se te pedirá introducir una contraseña maestra. Esta contraseña será necesaria para acceder al gestor.
+      (Elige una contraseña maestra segura y colocala cada vez que ingreses al programa,
+        ya que las cuentas que crees deberan ser consultadas con dicha contraseña maestra indicada al inicio del programa
+        ¡No la olvides o perderas la informacion que ingreses!)
 
 2. **Gestión de Contraseñas:**
    - Agrega una nueva contraseña proporcionando un nombre de servicio, usuario y contraseña.
@@ -41,12 +45,12 @@ Antes de comenzar, asegúrate de que tienes los siguientes elementos instalados 
    - Elimina entradas cuando ya no las necesites.
 
 3. **Seguridad de los Datos:**
-   - Los datos están cifrados y almacenados localmente. Solo se descifran temporalmente cuando se introducen correctamente la contraseña maestra.
+   - Los datos están cifrados y almacenados localmente. Solo se descifran temporalmente cuando se introducen correctamente la contraseña maestra al iniciar el programa.
 
 ## Estructura del Proyecto
 ```
 Encrypted_Password-2.1/
-├── main.py              # Archivo principal del programa
+├── Encrypted_Password-2.1.py              # Archivo principal del programa
 ├── utils.py             # Funciones auxiliares para cifrado y descifrado
 ├── database/            # Base de datos para almacenar las contraseñas cifradas
 ├── requirements.txt     # Dependencias del proyecto
